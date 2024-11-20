@@ -1,14 +1,6 @@
-interface AISite {
-  id: string;
-  name: string;
-  description: string;
-  category: string[];
-  tags: string[];
-  url: string;
-  logo: string;
-}
+import type { Website } from '../types/website'
 
-export const aiSites: AISite[] = [
+export const aiSites: Website[] = [
   {
     id: "1",
     name: "ChatGPT",

@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { AISite } from '../types/ai-site'
+import type { Website } from '../types/website'
 
 export const useFavoriteStore = defineStore('favorites', () => {
-  const favorites = ref<AISite[]>([])
+  const favorites = ref<Website[]>([])
 
   // 从 localStorage 加载收藏数据
   const loadFavorites = () => {
@@ -18,7 +18,7 @@ export const useFavoriteStore = defineStore('favorites', () => {
     localStorage.setItem('favorites', JSON.stringify(favorites.value))
   }
 
-  const addFavorite = (site: AISite) => {
+  const addFavorite = (site: Website) => {
     favorites.value.push(site)
     saveFavorites()
   }
