@@ -34,9 +34,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { NTag, NButton, NIcon } from 'naive-ui'
+import { NTag, NButton, NIcon, NEllipsis } from 'naive-ui'
 import { ExternalLink } from '@vicons/tabler'  // 使用 ExternalLink 图标
-
 import { useFavoriteStore } from '../stores/favorites'
 import type { AISite } from '../types/ai-site'
 

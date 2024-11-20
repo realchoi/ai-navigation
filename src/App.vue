@@ -1,7 +1,6 @@
 <template>
   <!-- 添加暗色主题配置 -->
-  <n-config-provider :theme="darkTheme"></n-config-provider>
-  <n-config-provider>
+  <n-config-provider :theme-overrides="themeOverrides">
     <n-message-provider>
       <n-layout>
         <n-layout-header class="header-fixed">
@@ -39,18 +38,18 @@
 </template>
 
 <script setup lang="ts">
-import { darkTheme } from 'naive-ui'  // 导入暗色主题
-import { useRouter } from 'vue-router'
-import {
-  NConfigProvider,
-  NMessageProvider,
-  NLayout,
-  NLayoutHeader,
+import { 
+  NConfigProvider, 
+  NMessageProvider, 
+  NLayout, 
+  NLayoutHeader, 
   NLayoutContent,
   NLayoutFooter,
-  NMenu,
-  NButton
+  NMenu, 
+  NButton 
 } from 'naive-ui'
+import { themeOverrides } from './styles/themeOverrides'
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
