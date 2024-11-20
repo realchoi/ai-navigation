@@ -2,7 +2,7 @@
   <!-- 添加 cursor-pointer 类和点击事件 -->
   <a :href="site.url" target="_blank" class="ai-card cursor-pointer">
     <div class="card-header">
-      <img :src="site.logo" :alt="site.name" class="site-logo">
+      <img :src="logoUrl" :alt="site.name" class="site-logo" @error="handleLogoError">
       <h3 class="site-name">{{ site.name }}</h3>
       <!-- 添加箭头图标 -->
       <div class="arrow-icon">
@@ -33,10 +33,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { NTag, NButton, NIcon, NEllipsis } from 'naive-ui'
 import { ExternalLink } from '@vicons/tabler'  // 使用 ExternalLink 图标
 import { useFavoriteStore } from '../stores/favorites'
+import { getLocalLogo, DEFAULT_LOGO } from '../utils/logoUtils'
 import type { Website } from '../types/website'
 
 const props = defineProps<{
@@ -52,6 +53,14 @@ const toggleFavorite = () => {
   } else {
     favoriteStore.addFavorite(props.site)
   }
+}
+
+// 添加 logo URL 处理
+const logoUrl = ref(getLocalLogo(props.site.name_en))
+
+// 处理图片加载失败
+const handleLogoError = () => {
+  logoUrl.value = DEFAULT_LOGO
 }
 </script>
 
