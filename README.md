@@ -26,30 +26,23 @@
 
 ```bash
 # 克隆项目
-git clone https://github.com/yourusername/ai-navigation.git
-```
+git clone https://github.com/realchoi/ai-navigation.git
 
 # 进入项目目录
-```bash
 cd ai-navigation
-```
 
 # 安装依赖
-```bash
 npm install
-```
 
 # 启动开发服务器
-```bash
 npm run dev
-```
 
 # 构建生产版本
-```bash
 npm run build
 ```
 
 # 项目结构
+
 ``` bash
 ai-navigation/
 ├── src/
@@ -65,7 +58,9 @@ ai-navigation/
 ```
 
 # 贡献指南
+
 欢迎提交 Issue 和 Pull Request 来帮助改进这个项目。
 
 # 许可证
+
 [MIT](https://opensource.org/licenses/MIT) 许可协议
