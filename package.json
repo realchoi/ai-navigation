@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "taobao": "npm install --registry=https://registry.npmmirror.com"
   },
   "dependencies": {
     "@vicons/ionicons5": "^0.12.0",
