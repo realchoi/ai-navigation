@@ -8,8 +8,7 @@ export const aiSites: Website[] = [
     category: ["AI助手", "聊天"],
     tags: ["GPT", "对话", "AI", "热门"],
     url: "https://chat.openai.com",
-    logo: "https://cdn.oaistatic.com/_next/static/media/favicon-32x32.be48395e.png",
-    name_en: "chatgpt"
+    logo: "chatgpt"
   },
   {
     id: "2",
@@ -18,8 +17,7 @@ export const aiSites: Website[] = [
     category: ["AI助手", "聊天"],
     tags: ["国产", "对话", "创作"],
     url: "https://yiyan.baidu.com",
-    logo: "https://yiyan.baidu.com/favicon.ico",
-    name_en: "baidu-yiyan"
+    logo: "baidu-yiyan"
   },
   {
     id: "3",
@@ -28,8 +26,7 @@ export const aiSites: Website[] = [
     category: ["AI绘画", "创作"],
     tags: ["绘画", "艺术", "创作"],
     url: "https://www.midjourney.com",
-    logo: "https://www.midjourney.com/favicon.ico",
-    name_en: "midjourney"
+    logo: "midjourney"
   },
   {
     id: "4",
@@ -38,8 +35,7 @@ export const aiSites: Website[] = [
     category: ["AI助手", "聊天"],
     tags: ["国产", "对话", "专业"],
     url: "https://qianwen.aliyun.com",
-    logo: "https://qianwen.aliyun.com/favicon.ico",
-    name_en: "qianwen"
+    logo: "qianwen"
   },
   {
     id: "5",
@@ -48,8 +44,7 @@ export const aiSites: Website[] = [
     category: ["AI绘画", "开源"],
     tags: ["绘画", "开源", "创作"],
     url: "https://stability.ai",
-    logo: "https://stability.ai/favicon.ico",
-    name_en: "stable-diffusion"
+    logo: "stable-diffusion"
   },
   {
     id: "6",
@@ -58,8 +53,7 @@ export const aiSites: Website[] = [
     category: ["AI助手", "聊天"],
     tags: ["对话", "专业", "写作"],
     url: "https://claude.ai",
-    logo: "https://claude.ai/favicon.ico",
-    name_en: "claude"
+    logo: "claude"
   },
   {
     id: "7",
@@ -68,8 +62,7 @@ export const aiSites: Website[] = [
     category: ["AI助手", "聊天"],
     tags: ["国产", "对话", "语音"],
     url: "https://xinghuo.xfyun.cn",
-    logo: "https://xinghuo.xfyun.cn/favicon.ico",
-    name_en: "xunfei-xinghuo"
+    logo: "xunfei-xinghuo"
   },
   {
     id: "8",
@@ -78,8 +71,7 @@ export const aiSites: Website[] = [
     category: ["AI助手", "效率"],
     tags: ["写作", "效率", "办公"],
     url: "https://notion.so",
-    logo: "https://www.notion.so/images/favicon.ico",
-    name_en: "notion"
+    logo: "notion"
   },
   {
     id: "9",
@@ -88,8 +80,7 @@ export const aiSites: Website[] = [
     category: ["编程", "开发"],
     tags: ["代码", "编程", "效率"],
     url: "https://github.com/features/copilot",
-    logo: "https://github.com/favicon.ico",
-    name_en: "copilot"
+    logo: "copilot"
   },
   {
     id: "10",
@@ -98,8 +89,7 @@ export const aiSites: Website[] = [
     category: ["AI助手", "开源"],
     tags: ["国产", "开源", "对话"],
     url: "https://chatglm.cn",
-    logo: "https://chatglm.cn/favicon.ico",
-    name_en: "chatglm"
+    logo: "chatglm"
   },
   {
     id: "11",
@@ -108,8 +98,7 @@ export const aiSites: Website[] = [
     category: ["效率", "创作"],
     tags: ["PPT", "办公", "创作"],
     url: "https://gamma.app",
-    logo: "https://gamma.app/favicon.ico",
-    name_en: "gamma"
+    logo: "gamma"
   },
   {
     id: "12",
@@ -118,7 +107,6 @@ export const aiSites: Website[] = [
     category: ["写作", "营销"],
     tags: ["写作", "营销", "创作"],
     url: "https://jasper.ai",
-    logo: "https://www.jasper.ai/favicon.ico",
-    name_en: "jasper"
+    logo: "jasper"
   }
 ]

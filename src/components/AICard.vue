@@ -56,7 +56,7 @@ const toggleFavorite = () => {
 }
 
 // 添加 logo URL 处理
-const logoUrl = ref(getLocalLogo(props.site.name_en))
+const logoUrl = ref(getLocalLogo(props.site.logo))
 
 // 处理图片加载失败
 const handleLogoError = () => {
