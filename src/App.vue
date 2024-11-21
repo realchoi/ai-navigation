@@ -48,7 +48,7 @@ import {
   NMenu, 
   NButton 
 } from 'naive-ui'
-import { themeOverrides } from './styles/themeOverrides'
+import { themeOverrides } from '@/styles/themeOverrides'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()

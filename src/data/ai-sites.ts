@@ -1,4 +1,4 @@
-import type { Website } from '../types/website'
+import type { Website } from '#/website'
 
 export const aiSites: Website[] = [
   {

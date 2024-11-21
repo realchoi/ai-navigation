@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { Website } from '../types/website'
+import type { Website } from '#/website'
 
 export const useFavoriteStore = defineStore('favorites', () => {
   const favorites = ref<Website[]>([])

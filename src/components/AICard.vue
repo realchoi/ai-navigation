@@ -36,9 +36,9 @@
 import { ref, computed } from 'vue'
 import { NTag, NButton, NIcon, NEllipsis } from 'naive-ui'
 import { ExternalLink } from '@vicons/tabler'  // 使用 ExternalLink 图标
-import { useFavoriteStore } from '../stores/favorites'
-import { getLocalLogo, DEFAULT_LOGO } from '../utils/logoUtils'
-import type { Website } from '../types/website'
+import { useFavoriteStore } from '@/stores/favorites'
+import { getLocalLogo, DEFAULT_LOGO } from '@/utils/logoUtils'
+import type { Website } from '@/types/website'
 
 const props = defineProps<{
   site: Website
