@@ -10,28 +10,12 @@
         </div>
       </template>
 
-      <n-data-table
-        :columns="columns"
-        :data="permissions"
-        :pagination="pagination"
-        @update:page="handlePageChange"
-      />
+      <n-data-table :columns="columns" :data="permissions" :pagination="pagination" @update:page="handlePageChange" />
     </n-card>
 
-    <n-modal
-      v-model:show="showModal"
-      :title="isEdit ? '编辑权限' : '新增权限'"
-      preset="card"
-      style="width: 500px"
-    >
-      <n-form
-        ref="formRef"
-        :model="currentPermission"
-        :rules="rules"
-        label-placement="left"
-        label-width="80"
-        require-mark-placement="right-hanging"
-      >
+    <n-modal v-model:show="showModal" :title="isEdit ? '编辑权限' : '新增权限'" preset="card" style="width: 500px">
+      <n-form ref="formRef" :model="currentPermission" :rules="rules" label-placement="left" label-width="80"
+        require-mark-placement="right-hanging">
         <n-form-item label="权限名称" path="name">
           <n-input v-model:value="currentPermission.name" placeholder="请输入权限名称" />
         </n-form-item>
@@ -39,11 +23,7 @@
           <n-input v-model:value="currentPermission.code" placeholder="请输入权限编码" />
         </n-form-item>
         <n-form-item label="描述" path="description">
-          <n-input
-            v-model:value="currentPermission.description"
-            type="textarea"
-            placeholder="请输入权限描述"
-          />
+          <n-input v-model:value="currentPermission.description" type="textarea" placeholder="请输入权限描述" />
         </n-form-item>
       </n-form>
 
@@ -60,7 +40,7 @@
 <script setup lang="ts">
 import { h, ref, reactive } from 'vue';
 import type { Permission } from '@/types/permission';
-import { NButton, NSpace, useMessage } from 'naive-ui';
+import { useMessage } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
 
 const message = useMessage();

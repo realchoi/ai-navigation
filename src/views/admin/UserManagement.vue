@@ -67,7 +67,7 @@
 <script setup lang="ts">
 import { h, ref, reactive } from 'vue';
 import type { User, Role } from '@/types/permission';
-import { NButton, NTag, NSpace, useMessage } from 'naive-ui';
+import { useMessage } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
 
 const message = useMessage();

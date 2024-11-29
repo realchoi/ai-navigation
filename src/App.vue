@@ -38,16 +38,6 @@
 </template>
 
 <script setup lang="ts">
-import { 
-  NConfigProvider, 
-  NMessageProvider, 
-  NLayout, 
-  NLayoutHeader, 
-  NLayoutContent,
-  NLayoutFooter,
-  NMenu, 
-  NButton 
-} from 'naive-ui'
 import { themeOverrides } from '@/styles/themeOverrides'
 import { useRouter } from 'vue-router'
 
@@ -69,13 +59,11 @@ const handleMenuClick = (key: string) => {
 }
 
 const handleLogin = () => {
-  // 处理登录逻辑
-  console.log('登录按钮点击')
+  router.push('/login')
 }
 
 const handleRegister = () => {
-  // 处理注册逻辑
-  console.log('注册按钮点击')
+  router.push('/register')
 }
 </script>
 

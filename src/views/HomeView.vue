@@ -17,7 +17,6 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { NInput, NSelect, NInputGroup } from 'naive-ui'
 import AICard from '@/components/AICard.vue'
 import { aiSites } from '@/data/ai-sites'
 
