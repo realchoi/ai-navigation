@@ -8,7 +8,7 @@
             <div class="header-content">
               <div class="header-left">
                 <h1>BestAI</h1>
-                <n-menu mode="horizontal" :options="menuOptions" @update:value="handleMenuClick" class="nav-menu" />
+                <n-menu mode="horizontal" :options="menuOptions" @update:value="handleMenuClick" :value="activeKey" class="nav-menu" />
               </div>
 
               <div class="auth-buttons">
@@ -39,9 +39,21 @@
 
 <script setup lang="ts">
 import { themeOverrides } from '@/styles/themeOverrides'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import { ref, watchEffect } from 'vue'
 
 const router = useRouter()
+const route = useRoute()
+
+// 当前选中的菜单项
+const activeKey = ref('')
+
+// 监听路由变化，更新选中状态
+watchEffect(() => {
+  // 从路由路径获取当前页面对应的 key
+  const path = route.path
+  activeKey.value = path === '/' ? 'home' : path.slice(1)
+})
 
 const menuOptions = [
   {
@@ -255,8 +267,34 @@ body {
   color: var(--text-primary) !important;
   font-weight: 500 !important;
   margin: 0 !important;
-  padding: 0 6px !important;
+  padding: 0 14px !important; /* 增加水平内边距 */
   background: transparent !important;
+  position: relative !important; /* 为下划线定位做准备 */
+}
+
+/* 选中状态的下划线效果 */
+.nav-menu .n-menu-item-content.n-menu-item-content--selected::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px; /* 下划线宽度 */
+  height: 2px; /* 下划线高度 */
+  background-color: #333; /* 下划线颜色 */
+  transition: all 0.3s ease;
+}
+
+/* 悬浮效果 */
+.nav-menu .n-menu-item-content:hover::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 2px;
+  background-color: #333; /* 悬浮时的下划线颜色 */
 }
 
 /* 确保菜单项之间没有任何间隔 */
@@ -265,8 +303,8 @@ body {
   padding: 0 !important;
 }
 
-/* 调整菜单项悬浮效果 */
+/* 移除原来的悬浮背景效果 */
 .nav-menu .n-menu-item:hover {
-  background: rgba(255, 255, 255, 0.1) !important;
+  background: transparent !important;
 }
 </style>
