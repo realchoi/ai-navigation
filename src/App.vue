@@ -240,7 +240,7 @@ body {
   min-height: 100vh;
 }
 
-/* 移动端适配 */
+/* 移动端适�� */
 @media (max-width: 768px) {
   .header-content {
     padding: 12px 16px;
@@ -279,9 +279,9 @@ body {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 24px; /* 下划线宽度 */
-  height: 2px; /* 下划线高度 */
-  background-color: #333; /* 下划线颜色 */
+  width: 24px;
+  height: 2px;
+  background-color: #333;
   transition: all 0.3s ease;
 }
 
@@ -294,7 +294,21 @@ body {
   transform: translateX(-50%);
   width: 24px;
   height: 2px;
-  background-color: #333; /* 悬浮时的下划线颜色 */
+  background-color: #333;
+  transition: all 0.3s ease;
+}
+
+/* 添加初始状态，使下划线从透明开始 */
+.nav-menu .n-menu-item-content::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 2px;
+  background-color: transparent;
+  transition: all 0.3s ease;
 }
 
 /* 确保菜单项之间没有任何间隔 */
