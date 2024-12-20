@@ -92,21 +92,22 @@ body {
   left: 0;
   right: 0;
   z-index: 1000;
-  background-color: rgba(255, 255, 255, 0.8);
-  /* 保持一致的背景色 */
-  backdrop-filter: blur(10px);
+  /* 修改背景色为半透明 */
+  background-color: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .header {
   padding: 0;
-  background-color: rgba(255, 255, 255, 0.8);
-  /* 半透明白色背景 */
-  backdrop-filter: blur(10px);
-  /* 磨砂玻璃效果 */
-  border-bottom: 1px solid #eee;
-  /* 浅灰色边框 */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  /* 更柔和的阴影 */
+  /* 移除原来的背景色，使用 header-fixed 的背景色 */
+  background: transparent;
+  /* 移除原来的模糊效果，避免重复 */
+  backdrop-filter: none;
+  border-bottom: none; /* 移除原来的边框 */
+  /* 调整阴影效果 */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 .header-content {
@@ -255,11 +256,17 @@ body {
   font-weight: 500 !important;
   margin: 0 !important;
   padding: 0 6px !important;
+  background: transparent !important;
 }
 
 /* 确保菜单项之间没有任何间隔 */
 .n-menu-item-content {
   margin: 0 !important;
   padding: 0 !important;
+}
+
+/* 调整菜单项悬浮效果 */
+.nav-menu .n-menu-item:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
 }
 </style>
