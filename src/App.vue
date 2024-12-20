@@ -7,7 +7,9 @@
           <div class="header">
             <div class="header-content">
               <div class="header-left">
-                <h1>BestAI</h1>
+                <router-link to="/" class="logo-container">
+                  <img src="/logo.svg" alt="Logo" class="logo" />
+                </router-link>
                 <n-menu mode="horizontal" :options="menuOptions" @update:value="handleMenuClick" :value="activeKey" class="nav-menu" />
               </div>
 
@@ -240,7 +242,7 @@ body {
   min-height: 100vh;
 }
 
-/* 移动端适�� */
+/* 移动端适配 */
 @media (max-width: 768px) {
   .header-content {
     padding: 12px 16px;
@@ -320,5 +322,16 @@ body {
 /* 移除原来的悬浮背景效果 */
 .nav-menu .n-menu-item:hover {
   background: transparent !important;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo {
+  height: 40px;
+  width: auto;
 }
 </style>
