@@ -98,6 +98,7 @@ const rules = {
     },
     {
       validator: (rule: any, value: string) => {
+        console.log(rule, value);
         return value === registerForm.password
       },
       message: '两次输入的密码不一致',

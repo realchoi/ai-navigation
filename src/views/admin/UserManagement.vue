@@ -66,8 +66,8 @@
 
 <script setup lang="ts">
 import { h, ref, reactive } from 'vue';
-import type { User, Role } from '@/types/permission';
-import { useMessage } from 'naive-ui';
+import type { User, Role } from '#/system/permission';
+import { useMessage, NTag, NSpace, NButton } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
 
 const message = useMessage();
@@ -250,6 +250,7 @@ const handleToggleStatus = async (row: User) => {
 const handleDeleteUser = async (row: User) => {
   try {
     // TODO: 调用删除用户API
+    console.log(row);
     message.success('删除成功');
   } catch (error) {
     message.error('删除失败');

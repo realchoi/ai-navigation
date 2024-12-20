@@ -39,8 +39,8 @@
 
 <script setup lang="ts">
 import { h, ref, reactive } from 'vue';
-import type { Permission } from '@/types/permission';
-import { useMessage } from 'naive-ui';
+import type { Permission } from '#/system/permission';
+import { useMessage, NSpace, NButton } from 'naive-ui';
 import type { DataTableColumns } from 'naive-ui';
 
 const message = useMessage();
@@ -143,6 +143,7 @@ const handleEditPermission = (row: Permission) => {
 const handleDeletePermission = async (row: Permission) => {
   try {
     // TODO: 调用删除权限API
+    console.log(row);
     message.success('删除成功');
   } catch (error) {
     message.error('删除失败');

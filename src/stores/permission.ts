@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { Permission, Role, User, MenuItem } from '#/system/permission';
+import type { User, MenuItem } from '#/system/permission';
 
 interface PermissionState {
   currentUser: User | null;

@@ -69,8 +69,8 @@
 
 <script setup lang="ts">
 import { h, ref, reactive } from 'vue';
-import type { Role, Permission } from '@/types/permission';
-import { useMessage } from 'naive-ui';
+import type { Role } from '#/system/permission';
+import { useMessage, NSpace, NButton } from 'naive-ui';
 import type { DataTableColumns, TreeOption } from 'naive-ui';
 
 const message = useMessage();
@@ -176,6 +176,7 @@ const handleEditRole = (row: Role) => {
 const handleDeleteRole = async (row: Role) => {
   try {
     // TODO: 调用删除角色API
+    console.log(row);
     message.success('删除成功');
   } catch (error) {
     message.error('删除失败');
