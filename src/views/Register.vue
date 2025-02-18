@@ -127,6 +127,8 @@ const handleRegister = async () => {
     if (response.ok) {
       message.success('注册成功')
       router.push('/login')
+    } else {
+      message.error(`注册失败：${response.statusText}`)
     }
   } catch (error) {
     console.error('注册失败:', error)
