@@ -8,7 +8,7 @@
             <div class="header-content">
               <div class="header-left">
                 <router-link to="/" class="logo-container">
-                  <img src="/logo.svg" alt="Logo" class="logo" />
+                  <img src="/hasome_ai.svg" alt="Logo" class="logo" />
                 </router-link>
                 <n-menu mode="horizontal" :options="menuOptions" @update:value="handleMenuClick" :value="activeKey" class="nav-menu" />
               </div>
@@ -136,7 +136,7 @@ body {
 .header-left {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 12px;
 }
 
 .header h1 {
