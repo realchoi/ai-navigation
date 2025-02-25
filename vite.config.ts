@@ -12,5 +12,14 @@ export default defineConfig({
       // 使用 # 代替 types 目录
       "#": path.resolve("./src/types"),
     }
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5118',
+        changeOrigin: true,
+        // rewrite: (path) => path.replace(/^\/api/, '')
+      }
+    }
   }
 })

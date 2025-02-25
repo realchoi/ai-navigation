@@ -1,4 +1,4 @@
-import http from '@/utils/request';
+import http from "@/utils/request";
 
 // 定义接口响应类型
 interface UserInfo {
@@ -41,7 +41,7 @@ interface RegisterParams {
  * @returns 登录结果
  */
 export function login(params: LoginParams): Promise<LoginResponse> {
-  return http.post<LoginResponse>('/auth/login', params);
+  return http.post<LoginResponse>("/account/login", params);
 }
 
 /**
@@ -50,14 +50,14 @@ export function login(params: LoginParams): Promise<LoginResponse> {
  * @returns 注册结果
  */
 export function register(params: RegisterParams): Promise<RegisterResponse> {
-  return http.post<RegisterResponse>('/auth/register', params);
+  return http.post<RegisterResponse>("/account/register", params);
 }
 
 /**
  * 退出登录
  */
 export function logout(): Promise<void> {
-  return http.post('/auth/logout');
+  return http.post("/account/logout");
 }
 
 /**
@@ -65,5 +65,5 @@ export function logout(): Promise<void> {
  * @returns 用户信息
  */
 export function getUserInfo(): Promise<UserInfo> {
-  return http.get<UserInfo>('/auth/user-info');
-} 
+  return http.get<UserInfo>("/account/user-info");
+}
