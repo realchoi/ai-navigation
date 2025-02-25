@@ -94,8 +94,12 @@ const handleRegister = async () => {
       email: registerForm.account
     })
 
+    // 只在成功时执行以下代码
     message.success('注册成功')
     router.push('/login')
+  } catch (error) {
+    // 这里不需要显示错误消息，因为请求拦截器已经处理了
+    // 但我们仍然需要catch以防止未处理的promise rejection
   } finally {
     loading.value = false
   }

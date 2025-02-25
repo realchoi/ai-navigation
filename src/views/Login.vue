@@ -65,6 +65,9 @@ const handleLogin = async () => {
     localStorage.setItem('token', data.token)
     message.success('登录成功')
     router.push('/dashboard')
+  } catch (error) {
+    // 这里不需要显示错误消息，因为请求拦截器已经处理了
+    // 但我们仍然需要catch以防止未处理的promise rejection
   } finally {
     loading.value = false
   }
