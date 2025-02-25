@@ -1,35 +1,17 @@
 <template>
   <div class="login-container">
     <n-card title="账号登录" class="login-card">
-      <n-form
-        ref="formRef"
-        :model="loginForm"
-        :rules="rules"
-      >
+      <n-form ref="formRef" :model="loginForm" :rules="rules">
         <n-form-item label="账号" path="account">
-          <n-input
-            v-model:value="loginForm.account"
-            placeholder="请输入邮箱或手机号"
-          />
+          <n-input v-model:value="loginForm.account" placeholder="请输入邮箱或手机号" />
         </n-form-item>
 
         <n-form-item label="密码" path="password">
-          <n-input
-            v-model:value="loginForm.password"
-            type="password"
-            placeholder="请输入密码"
-            show-password-on="click"
-          />
+          <n-input v-model:value="loginForm.password" type="password" placeholder="请输入密码" show-password-on="click" />
         </n-form-item>
 
         <div class="action-row">
-          <n-button
-            type="primary"
-            @click="handleLogin"
-            :loading="loading"
-            size="large"
-            block
-          >
+          <n-button type="primary" @click="handleLogin" :loading="loading" size="large" block>
             登录
           </n-button>
           <div class="register-link">
@@ -49,6 +31,7 @@ import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMessage } from 'naive-ui'
 import type { FormInst } from 'naive-ui'
+import { login } from '@/api/auth'
 
 const router = useRouter()
 const message = useMessage()
@@ -73,26 +56,15 @@ const handleLogin = async () => {
   try {
     loading.value = true
     await formRef.value?.validate()
-    
-    const response = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(loginForm)
+
+    const data = await login({
+      username: loginForm.account,
+      password: loginForm.password
     })
 
-    if (response.ok) {
-      const data = await response.json()
-      localStorage.setItem('token', data.token)
-      message.success('登录成功')
-      router.push('/dashboard')
-    } else {
-      message.error('账号或密码错误')
-    }
-  } catch (error) {
-    console.error('登录失败:', error)
-    message.error('登录失败，请重试')
+    localStorage.setItem('token', data.token)
+    message.success('登录成功')
+    router.push('/dashboard')
   } finally {
     loading.value = false
   }

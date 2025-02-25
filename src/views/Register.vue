@@ -1,51 +1,26 @@
 <template>
   <div class="register-container">
     <n-card title="注册账号" class="register-card">
-      <n-form
-        ref="formRef"
-        :model="registerForm"
-        :rules="rules"
-      >
+      <n-form ref="formRef" :model="registerForm" :rules="rules">
         <n-form-item label="账号" path="account">
-          <n-input
-            v-model:value="registerForm.account"
-            placeholder="请输入邮箱或手机号"
-          />
+          <n-input v-model:value="registerForm.account" placeholder="请输入邮箱或手机号" />
         </n-form-item>
 
         <n-form-item label="姓名" path="name">
-          <n-input
-            v-model:value="registerForm.name"
-            placeholder="请输入姓名"
-          />
+          <n-input v-model:value="registerForm.name" placeholder="请输入姓名" />
         </n-form-item>
 
         <n-form-item label="密码" path="password">
-          <n-input
-            v-model:value="registerForm.password"
-            type="password"
-            placeholder="请输入密码"
-            show-password-on="click"
-          />
+          <n-input v-model:value="registerForm.password" type="password" placeholder="请输入密码" show-password-on="click" />
         </n-form-item>
 
         <n-form-item label="确认密码" path="confirmPassword">
-          <n-input
-            v-model:value="registerForm.confirmPassword"
-            type="password"
-            placeholder="请再次输入密码"
-            show-password-on="click"
-          />
+          <n-input v-model:value="registerForm.confirmPassword" type="password" placeholder="请再次输入密码"
+            show-password-on="click" />
         </n-form-item>
 
         <div class="action-row">
-          <n-button
-            type="primary"
-            @click="handleRegister"
-            :loading="loading"
-            size="large"
-            block
-          >
+          <n-button type="primary" @click="handleRegister" :loading="loading" size="large" block>
             注册
           </n-button>
           <div class="login-link">
@@ -65,6 +40,7 @@ import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMessage } from 'naive-ui'
 import type { FormInst } from 'naive-ui'
+import { register } from '@/api/auth'
 
 const router = useRouter()
 const message = useMessage()
@@ -91,7 +67,7 @@ const rules = {
     { min: 6, message: '密码长度不能小于6位', trigger: 'blur' }
   ],
   confirmPassword: [
-    { 
+    {
       required: true,
       message: '请再次输入密码',
       trigger: 'blur'
@@ -111,28 +87,15 @@ const handleRegister = async () => {
   try {
     loading.value = true
     await formRef.value?.validate()
-    
-    const response = await fetch('/api/auth/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        account: registerForm.account,
-        name: registerForm.name,
-        password: registerForm.password
-      })
+
+    await register({
+      username: registerForm.account,
+      password: registerForm.password,
+      email: registerForm.account
     })
 
-    if (response.ok) {
-      message.success('注册成功')
-      router.push('/login')
-    } else {
-      message.error(`注册失败：${response.statusText}`)
-    }
-  } catch (error) {
-    console.error('注册失败:', error)
-    message.error('注册失败，请重试')
+    message.success('注册成功')
+    router.push('/login')
   } finally {
     loading.value = false
   }
