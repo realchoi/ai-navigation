@@ -22,16 +22,18 @@ interface RegisterResponse {
 
 // 登录请求参数类型
 interface LoginParams {
-  username: string;
+  identityType: string;
+  identifier: string;
   password: string;
   rememberMe?: boolean;
 }
 
 // 注册请求参数类型
 interface RegisterParams {
-  username: string;
+  identityType: string;
+  identifier: string;
+  name: string;
   password: string;
-  email?: string;
   // 其他注册所需字段
 }
 

@@ -51,9 +51,10 @@ export const themeOverrides: GlobalThemeOverrides = {
     peers: {
       InternalSelection: {
         textColor: '#333333',
-        border: '#e5e5e5',
+        border: '1px solid #e5e5e5',
         borderHover: '#666666',
         borderFocus: '#333333',
+        borderRadius: '4px'
       }
     }
   },

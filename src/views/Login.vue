@@ -2,8 +2,16 @@
   <div class="login-container">
     <n-card title="账号登录" class="login-card">
       <n-form ref="formRef" :model="loginForm" :rules="rules">
-        <n-form-item label="账号" path="account">
-          <n-input v-model:value="loginForm.account" placeholder="请输入邮箱或手机号" />
+        <n-form-item label="账号" path="identifier">
+          <n-input-group>
+            <n-select
+              v-model:value="loginForm.identityType"
+              :options="identityTypeOptions"
+              style="width: 140px"
+              bordered
+            />
+            <n-input v-model:value="loginForm.identifier" :placeholder="getPlaceholder()" />
+          </n-input-group>
         </n-form-item>
 
         <n-form-item label="密码" path="password">
@@ -39,13 +47,47 @@ const formRef = ref<FormInst | null>(null)
 const loading = ref(false)
 
 const loginForm = reactive({
-  account: '',
+  identityType: 'email',
+  identifier: '',
   password: ''
 })
 
+const identityTypeOptions = [
+  { label: '邮箱', value: 'email' },
+  { label: '手机号', value: 'phone' },
+  { label: '用户名', value: 'username' }
+]
+
+const getPlaceholder = () => {
+  const map: Record<string, string> = {
+    email: '请输入邮箱',
+    phone: '请输入手机号',
+    username: '请输入用户名'
+  }
+  return map[loginForm.identityType]
+}
+
 const rules = {
-  account: [
-    { required: true, message: '请输入账号', trigger: 'blur' }
+  identifier: [
+    { required: true, message: '请输入账号', trigger: 'blur' },
+    {
+      validator: (_rule: any, value: string) => {
+        if (!value) return true // 如果为空，让 required 规则去处理
+        if (loginForm.identityType === 'email') {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+          if (!emailRegex.test(value)) {
+            return new Error('请输入正确的邮箱格式')
+          }
+        } else if (loginForm.identityType === 'phone') {
+          const phoneRegex = /^1[3-9]\d{9}$/
+          if (!phoneRegex.test(value)) {
+            return new Error('请输入正确的手机号格式')
+          }
+        }
+        return true
+      },
+      trigger: 'blur'
+    }
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' }
@@ -58,7 +100,8 @@ const handleLogin = async () => {
     await formRef.value?.validate()
 
     const data = await login({
-      username: loginForm.account,
+      identityType: loginForm.identityType,
+      identifier: loginForm.identifier,
       password: loginForm.password
     })
 
