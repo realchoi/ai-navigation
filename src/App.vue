@@ -98,6 +98,14 @@ const menuOptions = [
   {
     label: '收藏',
     key: 'favorites'
+  },
+  {
+    label: '菜单1',
+    key: 'menu1'
+  },
+  {
+    label: '菜单2',
+    key: 'menu2'
   }
 ]
 
@@ -342,7 +350,6 @@ body {
 .nav-menu .n-menu-item {
   color: var(--text-color) !important;
   font-weight: 500;
-  padding: 0 14px !important;
   background: transparent !important;
 }
 
