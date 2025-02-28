@@ -30,10 +30,14 @@ export function addOrUpdate(dto: AiWebsiteDto): Promise<string> {
  * @returns 分页列表
  */
 export function queryPage(
+  categoryId: string,
+  keyword: string,
   pageIndex: number,
   pageSize: number
 ): Promise<PagedQueryOutput<AiWebsiteDto>> {
   return http.post("/ai/website/page", {
+    categoryId,
+    keyword,
     pageIndex,
     pageSize,
   });

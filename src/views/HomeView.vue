@@ -26,8 +26,9 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import AICard from '@/components/AICard.vue'
-import { aiSites } from '@/data/ai-sites'
-import { queryPage } from '@/api/category'
+import { queryPage as queryCategoryPage } from '@/api/category'
+import { queryPage as queryWebsitePage } from '@/api/website'
+import type { AiWebsiteDto } from '@/api/website'
 
 /**
  * 搜索文本
@@ -36,7 +37,7 @@ const searchQuery = ref('')
 /**
  * 选择的分类
  */
-const selectedCategory = ref(null)
+const selectedCategory = ref('')
 /**
  * 分类选项
  */
@@ -60,11 +61,16 @@ const isLoading = ref(false)
 const hasMore = ref(true)
 
 /**
+ * 添加网站列表状态
+ */
+const websites = ref<AiWebsiteDto[]>([])
+
+/**
  * 获取分类数据
  */
 const fetchCategories = async () => {
   try {
-    const { items } = await queryPage(1, 99999)
+    const { items } = await queryCategoryPage(1, 99999)
     categoryOptions.value = items.map(category => ({
       label: category.name,
       value: category.id
@@ -75,10 +81,37 @@ const fetchCategories = async () => {
 }
 
 /**
+ * 修改为从接口获取数据
+ */
+const fetchWebsites = async () => {
+  try {
+    isLoading.value = true
+    const { items, total } = await queryWebsitePage(
+      selectedCategory.value,
+      searchQuery.value,
+      currentPage.value,
+      itemsPerPage
+    );
+
+    if (currentPage.value === 1) {
+      websites.value = items
+    } else {
+      websites.value = [...websites.value, ...items]
+    }
+
+    hasMore.value = websites.value.length < total
+  } catch (error) {
+    console.error('获取网站列表失败:', error)
+  } finally {
+    isLoading.value = false
+  }
+}
+
+/**
  * 过滤后的站点
  */
 const filteredSites = computed(() => {
-  return aiSites.filter(site => {
+  return websites.value.filter(site => {
     const matchesSearch = searchQuery.value
       ? site.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       site.description.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
@@ -86,7 +119,7 @@ const filteredSites = computed(() => {
       : true
 
     const matchesCategory = selectedCategory.value
-      ? site.category.includes(selectedCategory.value)
+      ? site.categoryId === selectedCategory.value
       : true
 
     return matchesSearch && matchesCategory
@@ -96,9 +129,7 @@ const filteredSites = computed(() => {
 /**
  * 显示的站点
  */
-const displayedSites = computed(() => {
-  return filteredSites.value.slice(0, currentPage.value * itemsPerPage)
-})
+const displayedSites = computed(() => filteredSites.value)
 
 /**
  * 滚动加载更多
@@ -115,20 +146,11 @@ const handleScroll = () => {
 /**
  * 加载更多
  */
-const loadMore = () => {
-  isLoading.value = true
-  setTimeout(() => {
-    const totalItems = filteredSites.value.length
-    const totalPages = Math.ceil(totalItems / itemsPerPage)
-
-    if (currentPage.value < totalPages) {
-      currentPage.value++
-      hasMore.value = true
-    } else {
-      hasMore.value = false
-    }
-    isLoading.value = false
-  }, 500)
+const loadMore = async () => {
+  if (!isLoading.value && hasMore.value) {
+    currentPage.value++
+    await fetchWebsites()
+  }
 }
 
 /**
@@ -137,6 +159,8 @@ const loadMore = () => {
 watch([searchQuery, selectedCategory], () => {
   currentPage.value = 1
   hasMore.value = true
+  websites.value = []
+  fetchWebsites()
 })
 
 /**
@@ -145,6 +169,7 @@ watch([searchQuery, selectedCategory], () => {
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
   fetchCategories()
+  fetchWebsites()
 })
 
 /**
