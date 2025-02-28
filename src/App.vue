@@ -140,7 +140,7 @@ const userMenuOptions = [
   {
     label: () => h('div', { class: 'menu-item' }, [
       h(NIcon, null, { default: () => h(SettingsIcon) }),
-      h('span', '设置')
+      h('span', '系统设置')
     ]),
     key: 'settings'
   },
