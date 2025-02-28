@@ -1,7 +1,7 @@
 import http from "@/utils/request";
 
 // 定义接口响应类型
-interface UserInfo {
+export interface UserInfo {
   id: string | number;
   identityType: number;
   identifier: string;

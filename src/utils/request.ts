@@ -1,6 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { createDiscreteApi } from 'naive-ui';
-import router from '@/router';
 
 // 定义错误响应数据接口
 interface ApiErrorResponse<T = any> {

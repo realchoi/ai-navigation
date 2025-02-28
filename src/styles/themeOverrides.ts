@@ -58,5 +58,22 @@ export const themeOverrides: GlobalThemeOverrides = {
       }
     }
   },
+  Dropdown: {
+    optionTextColor: '#333333',
+    optionTextColorHover: '#000000',
+    optionColorHover: 'rgba(0, 0, 0, 0.06)',
+    dividerColor: '#e5e5e5',
+    peers: {
+      Popover: {
+        borderRadius: '4px',
+        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.12)',
+        color: '#ffffff'
+      }
+    }
+  },
+  Avatar: {
+    color: '#999',
+    borderRadius: '50%'
+  },
   // 可以继续添加其他组件的样式覆盖
 }

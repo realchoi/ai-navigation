@@ -13,13 +13,27 @@
                 <n-menu mode="horizontal" :options="menuOptions" @update:value="handleMenuClick" :value="activeKey" class="nav-menu" />
               </div>
 
-              <div class="auth-buttons">
+              <!-- 根据登录状态显示不同的按钮 -->
+              <div v-if="!userInfo" class="auth-buttons">
                 <n-button size="small" quaternary class="login-btn" @click="handleLogin">
                   登录
                 </n-button>
                 <n-button size="small" quaternary class="register-btn" @click="handleRegister">
                   注册
                 </n-button>
+              </div>
+              <div v-else class="user-info">
+                <n-dropdown :options="userMenuOptions" @select="handleUserMenuSelect" trigger="click">
+                  <div class="user-avatar">
+                    <n-avatar
+                      round
+                      :size="32"
+                      :src="userInfo.avatar || ''"
+                      :fallback-src="'/default-avatar.png'"
+                    />
+                    <span class="username">{{ userInfo.nickName }}</span>
+                  </div>
+                </n-dropdown>
               </div>
             </div>
           </div>
@@ -42,13 +56,32 @@
 <script setup lang="ts">
 import { themeOverrides } from '@/styles/themeOverrides'
 import { useRouter, useRoute } from 'vue-router'
-import { ref, watchEffect } from 'vue'
+import { ref, watchEffect, h, onMounted } from 'vue'
+import { NIcon } from 'naive-ui'
+import { 
+  PersonCircle as UserIcon,
+  Star as StarIcon,
+  Settings as SettingsIcon,
+  LogOut as LogoutIcon
+} from '@vicons/ionicons5'
+import { useUserStore } from '@/stores/user'
+import { storeToRefs } from 'pinia'
 
 const router = useRouter()
 const route = useRoute()
 
 // 当前选中的菜单项
 const activeKey = ref('')
+
+const userStore = useUserStore()
+
+// 替换原来的 userInfo ref
+const { userInfo } = storeToRefs(userStore)
+
+// 初始化时从 localStorage 获取用户信息
+onMounted(() => {
+  userStore.loadUserInfo()
+})
 
 // 监听路由变化，更新选中状态
 watchEffect(() => {
@@ -79,48 +112,90 @@ const handleLogin = () => {
 const handleRegister = () => {
   router.push('/register')
 }
+
+// 用户菜单选项
+const userMenuOptions = [
+  {
+    label: () => h('div', { class: 'menu-item' }, [
+      h(NIcon, null, { default: () => h(UserIcon) }),
+      h('span', '个人信息')
+    ]),
+    key: 'profile'
+  },
+  {
+    label: () => h('div', { class: 'menu-item' }, [
+      h(NIcon, null, { default: () => h(StarIcon) }),
+      h('span', '我的收藏')
+    ]),
+    key: 'favorites'
+  },
+  {
+    label: () => h('div', { class: 'menu-item' }, [
+      h(NIcon, null, { default: () => h(SettingsIcon) }),
+      h('span', '设置')
+    ]),
+    key: 'settings'
+  },
+  {
+    type: 'divider',
+    key: 'd1'
+  },
+  {
+    label: () => h('div', { class: 'menu-item' }, [
+      h(NIcon, null, { default: () => h(LogoutIcon) }),
+      h('span', '退出登录')
+    ]),
+    key: 'logout'
+  }
+]
+
+// 处理用户菜单选择
+const handleUserMenuSelect = (key: string) => {
+  switch (key) {
+    case 'logout':
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('user')
+      userStore.setUserInfo(null)
+      router.push('/login')
+      break
+    case 'profile':
+      router.push('/profile')
+      break
+    case 'favorites':
+      router.push('/favorites')
+      break
+    case 'settings':
+      router.push('/settings')
+      break
+  }
+}
 </script>
 
 <style>
 :root {
-  /* 修改为黑白配色 */
   --primary-color: #ffffff;
   --primary-hover: #e0e0e0;
-  --dark-gray: #121212;
-  --text-color: #ffffff;
-  --background-color: #121212;
-  --secondary-background: #1e1e1e;
+  --text-color: #333333;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --background-blur: rgba(255, 255, 255, 0.6);
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background-color: var(--background-color);
-  color: var(--text-color);
 }
 
+/* 布局相关 */
 .header-fixed {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  /* 修改背景色为半透明 */
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: var(--background-blur);
   backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.header {
-  padding: 0;
-  /* 移除原来的背景色，使用 header-fixed 的背景色 */
-  background: transparent;
-  /* 移除原来的模糊效果，避免重复 */
-  backdrop-filter: none;
-  border-bottom: none; /* 移除原来的边框 */
-  /* 调整阴影效果 */
+  border-bottom: 1px solid var(--border-color);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
@@ -195,7 +270,6 @@ body {
 .main-content {
   flex: 1;
   min-height: calc(100vh - 70px - 73px);
-  background-color: #ffffff;
   margin-top: 70px;
 }
 
@@ -266,41 +340,12 @@ body {
 }
 
 .nav-menu .n-menu-item {
-  color: var(--text-primary) !important;
-  font-weight: 500 !important;
-  margin: 0 !important;
-  padding: 0 14px !important; /* 增加水平内边距 */
+  color: var(--text-color) !important;
+  font-weight: 500;
+  padding: 0 14px !important;
   background: transparent !important;
-  position: relative !important; /* 为下划线定位做准备 */
 }
 
-/* 选中状态的下划线效果 */
-.nav-menu .n-menu-item-content.n-menu-item-content--selected::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 24px;
-  height: 2px;
-  background-color: #333;
-  transition: all 0.3s ease;
-}
-
-/* 悬浮效果 */
-.nav-menu .n-menu-item-content:hover::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 24px;
-  height: 2px;
-  background-color: #333;
-  transition: all 0.3s ease;
-}
-
-/* 添加初始状态，使下划线从透明开始 */
 .nav-menu .n-menu-item-content::after {
   content: '';
   position: absolute;
@@ -313,17 +358,37 @@ body {
   transition: all 0.3s ease;
 }
 
-/* 确保菜单项之间没有任何间隔 */
-.n-menu-item-content {
-  margin: 0 !important;
-  padding: 0 !important;
+.nav-menu .n-menu-item-content--selected::after,
+.nav-menu .n-menu-item-content:hover::after {
+  background-color: var(--text-color);
 }
 
-/* 移除原来的悬浮背景效果 */
-.nav-menu .n-menu-item:hover {
-  background: transparent !important;
+/* 用户信息 */
+.user-info {
+  display: flex;
+  align-items: center;
 }
 
+.user-avatar {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.user-avatar:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.username {
+  margin-left: 8px;
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+/* Logo */
 .logo-container {
   display: flex;
   align-items: center;
@@ -333,5 +398,27 @@ body {
 .logo {
   height: 40px;
   width: auto;
+}
+
+/* 下拉菜单 */
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.menu-item .n-icon {
+  font-size: 16px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .header-content {
+    padding: 12px 16px;
+  }
+
+  .header-left {
+    gap: 16px;
+  }
 }
 </style>

@@ -36,11 +36,13 @@ import { useRouter } from 'vue-router'
 import { useMessage } from 'naive-ui'
 import type { FormInst } from 'naive-ui'
 import { login } from '@/api/auth'
+import { useUserStore } from '@/stores/user'
 
 const router = useRouter()
 const message = useMessage()
 const formRef = ref<FormInst | null>(null)
 const loading = ref(false)
+const userStore = useUserStore()
 
 const loginForm = reactive({
   identityType: 1,
@@ -103,6 +105,7 @@ const handleLogin = async () => {
 
     localStorage.setItem('accessToken', data.accessToken)
     localStorage.setItem('user', JSON.stringify(data.userInfo))
+    userStore.setUserInfo(data.userInfo)
     message.success('登录成功')
     router.push('/dashboard')
   } catch (error) {
