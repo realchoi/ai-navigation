@@ -2,11 +2,12 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError, In
 import { createDiscreteApi } from 'naive-ui';
 import router from '@/router';
 
-// 定义响应数据接口
-interface ApiResponse<T = any> {
+// 定义错误响应数据接口
+interface ApiErrorResponse<T = any> {
   code: number;
-  data: T;
+  status: string;
   message: string;
+  details: T[];
 }
 
 // 创建naive-ui的消息API
@@ -40,46 +41,48 @@ request.interceptors.request.use(
 // 响应拦截器
 request.interceptors.response.use(
   (response: AxiosResponse): any => {
-    const res = response.data as ApiResponse;
+    // const res = response.data as ApiResponse;
     
-    // 假设API返回格式为 { code: number, data: any, message: string }
-    if (res.code !== 0 && res.code !== 200) {
-      message.error(res.message || '请求失败');
+    // // 假设API返回格式为 { code: number, data: any, message: string }
+    // if (res.code !== 0 && res.code !== 200) {
+    //   message.error(res.message || '请求失败');
       
-      // 处理特定错误码
-      if (res.code === 401) {
-        // 未授权处理
-        router.push('/login');
-      }
+    //   // 处理特定错误码
+    //   if (res.code === 401) {
+    //     // 未授权处理
+    //     router.push('/login');
+    //   }
       
-      return Promise.reject(new Error(res.message || '未知错误'));
-    }
+    //   return Promise.reject(new Error(res.message || '未知错误'));
+    // }
     
-    return res.data || res;
+    return response?.data || {};
   },
   (error: AxiosError): Promise<AxiosError> => {
     if (error.response) {
-      const { status, data } = error.response as AxiosResponse<ApiResponse>;
+      console.log(error.response);
+      const { status, data } = error.response as AxiosResponse<ApiErrorResponse>;
+      const errorMessage = (data as ApiErrorResponse).message || `请求失败(${status})`;
       
       // 处理不同HTTP状态码
       switch (status) {
         case 400:
-          message.error((data as ApiResponse).message || '请求参数错误');
+          message.error(errorMessage || '请求参数错误');
           break;
         case 401:
-          message.error('登录已过期，请重新登录');
+          message.error(errorMessage || '登录已过期，请重新登录');
           break;
         case 403:
-          message.error('没有权限访问该资源');
+          message.error(errorMessage || '没有权限访问该资源');
           break;
         case 404:
-          message.error('请求的资源不存在');
+          message.error(errorMessage || '请求的资源不存在');
           break;
         case 500:
-          message.error('服务器错误，请联系管理员');
+          message.error(errorMessage || '服务器错误，请联系管理员');
           break;
         default:
-          message.error(`请求失败(${status})`);
+          message.error(errorMessage);
       }
     } else if (error.request) {
       // 请求已发送但无响应

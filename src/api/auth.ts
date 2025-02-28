@@ -3,15 +3,16 @@ import http from "@/utils/request";
 // 定义接口响应类型
 interface UserInfo {
   id: string | number;
-  username: string;
-  email?: string;
-  avatar?: string;
-  role?: string;
+  identityType: number;
+  identifier: string;
+  userName: string;
+  nickName: string;
+  avatar: string;
   // 其他用户信息字段
 }
 
 interface LoginResponse {
-  token: string;
+  accessToken: string;
   userInfo: UserInfo;
 }
 
@@ -22,18 +23,18 @@ interface RegisterResponse {
 
 // 登录请求参数类型
 interface LoginParams {
-  identityType: string;
+  identityType: number;
   identifier: string;
-  password: string;
+  credential: string;
   rememberMe?: boolean;
 }
 
 // 注册请求参数类型
 interface RegisterParams {
-  identityType: string;
+  identityType: number;
   identifier: string;
-  name: string;
-  password: string;
+  nickName: string;
+  credential: string;
   // 其他注册所需字段
 }
 
