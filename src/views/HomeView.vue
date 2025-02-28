@@ -27,6 +27,7 @@
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import AICard from '@/components/AICard.vue'
 import { aiSites } from '@/data/ai-sites'
+import { queryPage } from '@/api/category'
 
 /**
  * 搜索文本
@@ -39,16 +40,7 @@ const selectedCategory = ref(null)
 /**
  * 分类选项
  */
-const categoryOptions = computed(() => {
-  const categories = new Set<string>()
-  aiSites.forEach(site => {
-    site.category.forEach(cat => categories.add(cat))
-  })
-  return Array.from(categories).map(cat => ({
-    label: cat,
-    value: cat
-  }))
-})
+const categoryOptions = ref<Array<{ label: string, value: string }>>([])
 
 /**
  * 当前页码
@@ -66,6 +58,21 @@ const isLoading = ref(false)
  * 是否还有更多数据
  */
 const hasMore = ref(true)
+
+/**
+ * 获取分类数据
+ */
+const fetchCategories = async () => {
+  try {
+    const { items } = await queryPage(1, 99999)
+    categoryOptions.value = items.map(category => ({
+      label: category.name,
+      value: category.id
+    }))
+  } catch (error) {
+    console.error('获取分类失败:', error)
+  }
+}
 
 /**
  * 过滤后的站点
@@ -137,6 +144,7 @@ watch([searchQuery, selectedCategory], () => {
  */
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)
+  fetchCategories()
 })
 
 /**
