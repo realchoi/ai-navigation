@@ -20,7 +20,7 @@
           </n-button>
           <div class="register-link">
             还没有账号？
-            <n-button text tag="a" @click="router.push('/register')">
+            <n-button text color="#ff69b4" tag="a" @click="router.push('/register')">
               去注册👉
             </n-button>
           </div>
@@ -122,7 +122,7 @@ const handleLogin = async () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: calc(100vh - 70px - 73px) !important;
   background-color: #f5f5f5;
   box-sizing: border-box;
 }

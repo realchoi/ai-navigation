@@ -277,7 +277,7 @@ body {
 
 .main-content {
   flex: 1;
-  min-height: calc(100vh - 70px - 73px);
+  min-height: calc(100vh - 70px - 73px) !important;
   margin-top: 70px;
 }
 
