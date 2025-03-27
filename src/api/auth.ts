@@ -65,7 +65,6 @@ export const logout = () => {
   localStorage.removeItem('user')
   const userStore = useUserStore()
   userStore.setUserInfo(null)
-  window.location.href = '/login'
 }
 
 /**
