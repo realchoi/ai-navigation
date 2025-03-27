@@ -1,4 +1,5 @@
 import http from "@/utils/request";
+import { useUserStore } from "@/stores/user";
 
 // 定义接口响应类型
 export interface UserInfo {
@@ -59,8 +60,12 @@ export function register(params: RegisterParams): Promise<RegisterResponse> {
 /**
  * 退出登录
  */
-export function logout(): Promise<void> {
-  return http.post("/account/logout");
+export const logout = () => {
+  localStorage.removeItem('accessToken')
+  localStorage.removeItem('user')
+  const userStore = useUserStore()
+  userStore.setUserInfo(null)
+  window.location.href = '/login'
 }
 
 /**

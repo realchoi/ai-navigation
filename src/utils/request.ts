@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError, InternalAxiosRequestConfig } from 'axios';
 import { createDiscreteApi } from 'naive-ui';
-
+import { logout } from '@/api/auth';
 // 定义错误响应数据接口
 interface ApiErrorResponse<T = any> {
   code: number;
@@ -11,6 +11,7 @@ interface ApiErrorResponse<T = any> {
 
 // 创建naive-ui的消息API
 const { message } = createDiscreteApi(['message']);
+const { dialog } = createDiscreteApi(['dialog']);
 
 // 创建axios实例
 const request: AxiosInstance = axios.create({
@@ -41,35 +42,52 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (response: AxiosResponse): any => {
     // const res = response.data as ApiResponse;
-    
+
     // // 假设API返回格式为 { code: number, data: any, message: string }
     // if (res.code !== 0 && res.code !== 200) {
     //   message.error(res.message || '请求失败');
-      
+
     //   // 处理特定错误码
     //   if (res.code === 401) {
     //     // 未授权处理
     //     router.push('/login');
     //   }
-      
+
     //   return Promise.reject(new Error(res.message || '未知错误'));
     // }
-    
+
     return response?.data || {};
   },
   (error: AxiosError): Promise<AxiosError> => {
     if (error.response) {
-      console.log(error.response);
       const { status, data } = error.response as AxiosResponse<ApiErrorResponse>;
       const errorMessage = (data as ApiErrorResponse).message || `请求失败(${status})`;
-      
+
       // 处理不同HTTP状态码
       switch (status) {
         case 400:
           message.error(errorMessage || '请求参数错误');
           break;
         case 401:
-          message.error(errorMessage || '登录已过期，请重新登录');
+          // 退出登录
+          logout();
+          // message.error(errorMessage || '登录已过期，请重新登录');
+          // 询问用户是否需要重新登录
+          dialog.warning({
+            title: '过期提醒',
+            content: '登录已过期，是否跳转到登录页面？',
+            positiveText: '重新登录',
+            negativeText: '返回首页',
+            maskClosable: false,
+            closeOnEsc: false,
+            closable: false,
+            onPositiveClick: () => {
+              window.location.href = '/login';
+            },
+            onNegativeClick: () => {
+              window.location.href = '/';
+            }
+          })
           break;
         case 403:
           message.error(errorMessage || '没有权限访问该资源');
@@ -90,7 +108,7 @@ request.interceptors.response.use(
       // 其他错误
       message.error('请求错误: ' + error.message);
     }
-    
+
     return Promise.reject(error);
   }
 );
@@ -123,7 +141,7 @@ const http: Http = {
       ...config
     });
   },
-  
+
   /**
    * POST请求
    * @param url - 请求地址
@@ -138,7 +156,7 @@ const http: Http = {
       ...config
     });
   },
-  
+
   /**
    * PUT请求
    * @param url - 请求地址
@@ -153,7 +171,7 @@ const http: Http = {
       ...config
     });
   },
-  
+
   /**
    * DELETE请求
    * @param url - 请求地址
@@ -168,7 +186,7 @@ const http: Http = {
       ...config
     });
   },
-  
+
   /**
    * PATCH请求
    * @param url - 请求地址
@@ -183,7 +201,7 @@ const http: Http = {
       ...config
     });
   },
-  
+
   /**
    * 文件上传
    * @param url - 上传地址
@@ -192,11 +210,11 @@ const http: Http = {
    */
   upload<T = any>(url: string, file: File | FormData, config: AxiosRequestConfig = {}): Promise<T> {
     const formData = file instanceof FormData ? file : new FormData();
-    
+
     if (!(file instanceof FormData)) {
       formData.append('file', file);
     }
-    
+
     return request({
       method: 'post',
       url,
@@ -207,7 +225,7 @@ const http: Http = {
       ...config
     });
   },
-  
+
   /**
    * 文件下载
    * @param url - 下载地址
@@ -226,7 +244,7 @@ const http: Http = {
       const blob = new Blob([response.data]);
       const link = document.createElement('a');
       const blobURL = window.URL.createObjectURL(blob);
-      
+
       link.href = blobURL;
       link.download = filename || 'download';
       document.body.appendChild(link);
@@ -235,7 +253,7 @@ const http: Http = {
       window.URL.revokeObjectURL(blobURL);
     });
   },
-  
+
   /**
    * 原始请求方法，用于自定义请求
    * @param config - axios配置对象

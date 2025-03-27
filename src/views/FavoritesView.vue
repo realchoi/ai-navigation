@@ -27,7 +27,7 @@
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import AICard from '@/components/AICard.vue'
 import { useFavoriteStore } from '@/stores/favorites'
-import type { Website } from '@/types/website'
+import type { AiWebsiteDto } from '@/api/website'
 const favoritesStore = useFavoriteStore()
 
 /**
@@ -43,8 +43,8 @@ const selectedCategory = ref(null)
  */
 const categoryOptions = computed(() => {
     const categories = new Set<string>()
-    favoritesStore.favorites.forEach((site: Website) => {
-        site.category.forEach((cat: string) => categories.add(cat))
+    favoritesStore.favorites.forEach((site: AiWebsiteDto) => {
+        categories.add(site.categoryId)
     })
     return Array.from(categories).map(cat => ({
         label: cat,
@@ -72,7 +72,7 @@ const hasMore = ref(true)
  * 过滤后的站点
  */
 const filteredSites = computed(() => {
-    return favoritesStore.favorites.filter((site: Website) => {
+    return favoritesStore.favorites.filter((site: AiWebsiteDto) => {
         const matchesSearch = searchQuery.value
             ? site.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
             site.description.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
@@ -80,7 +80,7 @@ const filteredSites = computed(() => {
             : true
 
         const matchesCategory = selectedCategory.value
-            ? site.category.includes(selectedCategory.value)
+            ? site.categoryId === selectedCategory.value
             : true
 
         return matchesSearch && matchesCategory

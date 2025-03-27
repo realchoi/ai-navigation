@@ -21,10 +21,25 @@ export function addOrUpdate(dto: AiFavoriteDto): Promise<string> {
 
 /**
  * 查询 AI 收藏分页列表
+ * @param userId 用户ID
+ * @param categoryId 分类ID
+ * @param keyword 关键词
+ * @param pageIndex 页码
+ * @param pageSize 每页条数
+ * @returns 分页列表
  */
-export function queryAiFavoritePage(
+export function queryPage(
+  userId: string,
+  categoryId: string,
+  keyword: string,
   pageIndex: number,
   pageSize: number
 ): Promise<PagedQueryOutput<AiFavoriteDto>> {
-  return http.post("/ai/favorite/page", { pageIndex, pageSize });
+  return http.post("/ai/favorite/page", {
+    userId,
+    categoryId,
+    keyword,
+    pageIndex,
+    pageSize,
+  });
 }
